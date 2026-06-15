@@ -36,3 +36,32 @@
 - What exactly triggers the bar to decrement — every action or only wall hits?
 - Does the exit require the collectible first or can player go directly?
 - Are all 7 levels variations of the same layout or completely different?
+
+
+## Day 04 — Game Mechanic Fully Decoded (June 15, 2026)
+
+### True game mechanic (discovered via source code analysis)
+- Player has 3 lives per level, not a move counter
+- Each life lost resets player to start position
+- Level has multiple collectibles tagged "rjlbuycveu"
+- Each collectible is LOCKED until player state matches:
+  - Correct shape (changed by hitting "ttfwljgohq" sprites)
+  - Correct color (changed by hitting color modifier sprites)
+  - Correct rotation (changed by hitting rotation modifier sprites)
+- "npxgalaybz" sprites reset the step counter — bonus moves
+- Must collect ALL collectibles to complete level
+- Losing all 3 lives triggers GAME_OVER
+
+### Why our directed agent failed
+- Agent was navigating toward the goal exit
+- But the real task is to first find modifier sprites to 
+  match the required shape/color/rotation
+- Then navigate to the matching collectible
+- Our agent had no knowledge of this mechanic
+
+### Implication for agent design
+- Agent needs to track its current state (shape, color, rotation)
+- Agent needs to identify which modifier sprites change which property
+- Agent needs to plan: modify state → collect → modify → collect
+- This requires genuine reasoning, not just navigation
+- Perfect use case for an LLM agent
